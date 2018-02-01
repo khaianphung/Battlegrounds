@@ -3,7 +3,12 @@ This document is to help maintain the Git. If you have questions for uploading f
 *UPLOAD TO THE TESTING BRANCH FIRST*
 If you think that your code is going to break something, make a new branch.
 
+Re-sync your files before you upload anything
 Each branch you make should have a version number rather than testing/beta.
+Use two numbers separated by dots
+  (Example: 0.05 -new version-> 0.06)
+Include a letter if you upload a branch that already exists (only do this if you think that what you changed is not enough for a new branch)
+  (Example: 0.07 exists already -new version-> 0.07a)
 
 If you think that the code you added is working, create a pull request from your version of the branch to the testing/beta branch. The master should only be used for working versions of the project.
 
