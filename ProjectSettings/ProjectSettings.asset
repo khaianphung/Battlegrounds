@@ -589,9 +589,15 @@ PlayerSettings:
   facebookSdkVersion: 7.9.4
   apiCompatibilityLevel: 2
 <<<<<<< HEAD
+<<<<<<< HEAD
   cloudProjectId: 7b71aa67-5cbb-4dbb-9b95-8a8f16e5cbe7
   projectName: Stick-Figure-Battlegrounds
   organizationId: greg-3335477
+=======
+  cloudProjectId: d1861e86-14ef-4499-be0b-9c0384b21ccc
+  projectName: Stick-Figure-Battlegrounds
+  organizationId: klownbaby3000
+>>>>>>> origin/master
 =======
   cloudProjectId: d1861e86-14ef-4499-be0b-9c0384b21ccc
   projectName: Stick-Figure-Battlegrounds
