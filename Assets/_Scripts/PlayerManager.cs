@@ -16,8 +16,9 @@ public class PlayerManager : MonoBehaviour
 	private Animator _myAnim;					// Player's animator
 	private Rigidbody2D _myRigidBody;			// Player's rigidbody
 	private AudioSource[] _myAduioArray;		// Player's set of audios stored in an array
-	private float _speed;
-	private bool _jumping, _facingRight, _grounded, _dead; 
+	private float _speed, _maxhealth, _currenthealth, _healthbarlength;
+	private bool _jumping, _facingRight, _grounded, _dead;
+    private int _decay;
 
 	public float speedX, jumpSpeedY;
 
@@ -28,9 +29,19 @@ public class PlayerManager : MonoBehaviour
 		_myRigidBody = GetComponent<Rigidbody2D> ();
 		_facingRight = _grounded = true;
 		_jumping = _dead = false;
-
+        _maxhealth = 100;
+        _currenthealth = 100;
+        _decay = 0;
+        _healthbarlength = Screen.width / 3;
 	}
 	
+    //Should maybe moved to GUI once that module is done
+    //Load GUI for healthbar
+    void OnGUI()
+    {
+        GUI.Box(new Rect(10, 10, _healthbarlength, 20), _currenthealth + "/" + _maxhealth);
+    }
+
 	// Update is called once per frame
 	void Update () 
 	{
@@ -57,13 +68,38 @@ public class PlayerManager : MonoBehaviour
 			_speed = 0;
 		}
 
-		// Jump
-		if (Input.GetKeyDown (KeyCode.UpArrow ) || Input.GetKey(KeyCode.Space)) 
-		{
-			Jump ();
-		}
+        // Jump
+        if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKey(KeyCode.Space))
+        {
+            Jump();
+        }
 
+        //Overheal?
+        if (_currenthealth > _maxhealth)
+        {
+            _decay++;
+            if (_decay == 60)
+            {
+                _currenthealth--;
+                _decay = 0;
+            }
+        }
+        
+        //Check Dead
+        if (_currenthealth <= 0)
+        {
+            _dead = true;
+            _speed = 0;
+            Destroy(gameObject);
+            Application.LoadLevel(Application.loadedLevel);
+        }
 	}
+
+    void healthAdjust(int val)
+    {
+        if (_currenthealth != _maxhealth * 2)
+            _currenthealth += val;
+    }
 		
 	/// <summary>
 	/// Player movement and animation
