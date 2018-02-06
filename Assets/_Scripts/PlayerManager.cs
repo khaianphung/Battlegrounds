@@ -55,8 +55,15 @@ public class PlayerManager : MonoBehaviour
 		} // Idle
 		if (Input.GetKeyUp (KeyCode.LeftArrow)) 
 		{
-			_speed = 0;
-		}
+            if (!_jumping)
+            {
+                _speed = 0;
+            }
+            else
+            {
+                return;
+            }
+        }
 			
 		// Right player movement
 		if (Input.GetKeyDown (KeyCode.RightArrow)) 
@@ -65,8 +72,15 @@ public class PlayerManager : MonoBehaviour
 		} // Idle
 		if (Input.GetKeyUp (KeyCode.RightArrow)) 
 		{
-			_speed = 0;
-		}
+            if (!_jumping)
+            {
+                _speed = 0;
+            }
+            else
+            {
+                return;
+            }
+        }
 
         // Jump
         if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKey(KeyCode.Space))
@@ -157,10 +171,16 @@ public class PlayerManager : MonoBehaviour
 			_jumping = false;
 			_grounded = true;
 		}
-	}
-
-	// Phone Mobile Interface Button Triggers
-	public void WalkLeft()
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.gameObject.tag == "Spike")
+        {
+            _currenthealth = _currenthealth - 10;
+        }
+    }
+    // Phone Mobile Interface Button Triggers
+    public void WalkLeft()
 	{
 		_speed = -speedX;
 	}
