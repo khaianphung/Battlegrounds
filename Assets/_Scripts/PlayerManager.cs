@@ -55,7 +55,14 @@ public class PlayerManager : MonoBehaviour
 		} // Idle
 		if (Input.GetKeyUp (KeyCode.LeftArrow)) 
 		{
-            _speed = 0;
+            if (!_jumping)
+            {
+                _speed = 0;
+            }
+            else
+            {
+                return;
+            }
         }
 			
 		// Right player movement
@@ -65,7 +72,14 @@ public class PlayerManager : MonoBehaviour
 		} // Idle
 		if (Input.GetKeyUp (KeyCode.RightArrow)) 
 		{
-            _speed = 0;
+            if (!_jumping)
+            {
+                _speed = 0;
+            }
+            else
+            {
+                return;
+            }
         }
 
         // Jump
