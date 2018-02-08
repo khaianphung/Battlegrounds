@@ -21,6 +21,8 @@ public class PlayerManager : MonoBehaviour
     private int _decay;
 
 	public float speedX, jumpSpeedY;
+    public Transform FiringPoint;
+    public GameObject bullet;
 
 	// Initializing variables
 	void Start () 
@@ -69,9 +71,15 @@ public class PlayerManager : MonoBehaviour
 		}
 
         // Jump
-        if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKey(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             Jump();
+        }
+
+        // Shoot
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Instantiate(bullet, FiringPoint.position, FiringPoint.rotation);
         }
 
         //Overheal?
