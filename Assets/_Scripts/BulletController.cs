@@ -24,7 +24,7 @@ public class BulletController : MonoBehaviour {
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Instantiate(enemyKill, other.transform.position, other.transform.rotation);
         Destroy(gameObject);
+        Instantiate(enemyKill, other.transform.position, other.transform.rotation);
     }
 }
