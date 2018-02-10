@@ -42,38 +42,8 @@ public class PlayerManager : MonoBehaviour
         GUI.Box(new Rect(10, 10, _healthbarlength, 20), _currenthealth + "/" + _maxhealth);
     }
 
-	// Update is called once per frame
 	void Update () 
 	{
-		MovePlayer (_speed);
-		Flip ();
-
-		// Left player movement
-		if (Input.GetKeyDown (KeyCode.LeftArrow)) 
-		{
-			_speed = -speedX;
-		} // Idle
-		if (Input.GetKeyUp (KeyCode.LeftArrow)) 
-		{
-			_speed = 0;
-		}
-			
-		// Right player movement
-		if (Input.GetKeyDown (KeyCode.RightArrow)) 
-		{
-			_speed = speedX;
-		} // Idle
-		if (Input.GetKeyUp (KeyCode.RightArrow)) 
-		{
-			_speed = 0;
-		}
-
-        // Jump
-        if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKey(KeyCode.Space))
-        {
-            Jump();
-        }
-
         //Overheal?
         if (_currenthealth > _maxhealth)
         {
@@ -95,11 +65,60 @@ public class PlayerManager : MonoBehaviour
         }
 	}
 
+	void FixedUpdate()
+	{
+		Vector2 moveVec = new Vector2 (CrossPlatformInputManager.GetAxis ("Horizontal"), CrossPlatformInputManager.GetAxis ("Vertical")) * speedX;
+		MovePlayer (_speed);
+		Flip ();
+
+		// Joystick controls
+		if(moveVec.x > 0){
+			_speed = speedX;
+		}
+		if(moveVec.x < 0){
+			_speed = -speedX;
+		}
+		if(moveVec.x == 0){
+			_speed = 0;
+		}
+		if(moveVec.y > 67){
+			Jump ();
+		}
+
+		// Keyboard controls
+		// Left player movement
+		if (Input.GetKeyDown (KeyCode.LeftArrow)) 
+		{
+			_speed = -speedX;
+		} // Idle
+		if (Input.GetKeyUp (KeyCode.LeftArrow)) 
+		{
+			_speed = 0;
+		}
+
+		// Right player movement
+		if (Input.GetKeyDown (KeyCode.RightArrow)) 
+		{
+			_speed = speedX;
+		} // Idle
+		if (Input.GetKeyUp (KeyCode.RightArrow)) 
+		{
+			_speed = 0;
+		}
+
+		// Jump
+		if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKey(KeyCode.Space))
+		{
+			Jump();
+		}
+	}
+
     void healthAdjust(int val)
     {
         if (_currenthealth != _maxhealth * 2)
             _currenthealth += val;
     }
+		
 		
 	/// <summary>
 	/// Player movement and animation
@@ -130,7 +149,7 @@ public class PlayerManager : MonoBehaviour
 			_myAnim.SetInteger ("State", 0);
 		}
 	}
-
+		
 	// Code to flip the player when facing left and right
 	void Flip()
 	{
