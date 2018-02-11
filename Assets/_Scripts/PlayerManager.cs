@@ -23,6 +23,7 @@ public class PlayerManager : MonoBehaviour
 	public float speedX, jumpSpeedY;
     public Transform FiringPoint;
     public GameObject bullet;
+    public LevelManager levelManager;
 
 	// Initializing variables
 	void Start () 
@@ -79,16 +80,23 @@ public class PlayerManager : MonoBehaviour
         // Shoot
         if (Input.GetKeyDown(KeyCode.Space))
         {
+            //Create a bullet object at the FiringPoint position
             Instantiate(bullet, FiringPoint.position, FiringPoint.rotation);
         }
 
         //Overheal?
+        //If current health is greater than max health
         if (_currenthealth > _maxhealth)
         {
+            //Increment decay counter
             _decay++;
+            //When the decay counter is 60, decrease health by 1
+            //Equivalent to decrease health by 1 per 60 frames, or once per second
             if (_decay == 60)
             {
+                //Decrease health
                 _currenthealth--;
+                //Reset to 0
                 _decay = 0;
             }
         }
@@ -96,17 +104,48 @@ public class PlayerManager : MonoBehaviour
         //Check Dead
         if (_currenthealth <= 0)
         {
+            //Stop the player from jumping by setting dead state to true
             _dead = true;
+            //Stop the player from moving by setting their speed to 0
             _speed = 0;
-            Destroy(gameObject);
-            Application.LoadLevel(Application.loadedLevel);
+            //Display death message
+            Debug.Log("You Died");
+            //Begin respawn timer
+            respawnTimer();
         }
 	}
 
-    void healthAdjust(int val)
+    //Method to adjust player health, positive or negative
+    public void healthAdjust(int val)
     {
-        if (_currenthealth != _maxhealth * 2)
+        //If the player's current health is not the same as the max
+        if (_currenthealth != _maxhealth)
+            //Add the adjustment value to the current health
             _currenthealth += val;
+        //If the player's health is the same as the max, display message
+        else
+            Debug.Log("You are at max health");
+    }
+
+    //Respawn timer for deaths
+    public void respawnTimer()
+    {
+        //Takes the current time of death
+        float timeOfDeath = Time.time;
+        //Subtracts it from the current time to find the time elapsed
+        float timeElapsed = Time.time - timeOfDeath;
+        //Wait for three seconds to pass
+        do
+        {
+            //Update time elapsed
+            timeElapsed = Time.time - timeOfDeath;
+            //Message to display current task
+            Debug.Log("Wait to Respawn");
+        } while (timeElapsed < 3);
+        //Display that the player has respawned
+        Debug.Log("Respawned");
+        //Call method to respawn player
+        levelManager.RespawnPlayer();
     }
 		
 	/// <summary>

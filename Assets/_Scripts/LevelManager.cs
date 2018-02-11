@@ -20,7 +20,7 @@ public class LevelManager : MonoBehaviour {
 
     public void RespawnPlayer()
     {
-        Debug.Log("Respawn");
         player.transform.position = respawnPoint.transform.position;
+        player.healthAdjust(-100);
     }
 }
