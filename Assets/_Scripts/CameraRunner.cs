@@ -6,6 +6,7 @@ public class CameraRunner : MonoBehaviour {
 
 	private Transform player; 		// is the transform of the player
 	private float offSetX;			// is the offset x axis of the player
+    private float offSetY;
 
 	void Start () 
 	{
@@ -19,7 +20,9 @@ public class CameraRunner : MonoBehaviour {
 		{
 			player = player_go.transform;										// get the transform of the player
 			offSetX = transform.position.x - player.position.x;					// get the offset of the player by using the transform of the camera pane - the position of the player's x axis
-		}
+            offSetY = transform.position.y - player.position.y;
+
+        }
 	}
 
 	void Update () 
@@ -27,8 +30,9 @@ public class CameraRunner : MonoBehaviour {
 		if (player != null) 													
 		{
 			Vector3 pos = transform.position;				// get the position of the camera
-			pos.x = player.position.x + offSetX;			// set the position of the camera to the player and its offset
-			transform.position = pos;						// apply the position to the camera
+			pos.x = player.position.x + offSetX;            // set the position of the camera to the player and its offset
+            pos.y = player.position.y + offSetY;
+            transform.position = pos;						// apply the position to the camera
 		}
 	}
 }
