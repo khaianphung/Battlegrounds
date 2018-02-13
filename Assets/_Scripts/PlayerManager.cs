@@ -63,6 +63,33 @@ public class PlayerManager : MonoBehaviour
             Destroy(gameObject);
             Application.LoadLevel(Application.loadedLevel);
         }
+
+		// Keyboard controls
+		// Left player movement
+		if (Input.GetKeyDown (KeyCode.LeftArrow)) 
+		{
+			_speed = -speedX;
+		} // Idle
+		if (Input.GetKeyUp (KeyCode.LeftArrow)) 
+		{
+			_speed = 0;
+		}
+
+		// Right player movement
+		if (Input.GetKeyDown (KeyCode.RightArrow)) 
+		{
+			_speed = speedX;
+		} // Idle
+		if (Input.GetKeyUp (KeyCode.RightArrow)) 
+		{
+			_speed = 0;
+		}
+
+		// Jump
+		if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKey(KeyCode.Space))
+		{
+			Jump();
+		}
 	}
 
 	void FixedUpdate()
@@ -84,56 +111,10 @@ public class PlayerManager : MonoBehaviour
 		if(moveVec.y > 67){
 			Jump ();
 		}
-
-		// Keyboard controls
-		// Left player movement
-		if (Input.GetKeyDown (KeyCode.LeftArrow)) 
-		{
-			_speed = -speedX;
-		} // Idle
-		if (Input.GetKeyUp (KeyCode.LeftArrow)) 
-		{
-<<<<<<< HEAD
-			_speed = 0;
-		}
-
-=======
-            if (!_jumping)
-            {
-                _speed = 0;
-            }
-            else
-            {
-                return;
-            }
-        }
 			
->>>>>>> origin/testing/beta
-		// Right player movement
-		if (Input.GetKeyDown (KeyCode.RightArrow)) 
-		{
-			_speed = speedX;
-		} // Idle
-		if (Input.GetKeyUp (KeyCode.RightArrow)) 
-		{
-            if (!_jumping)
-            {
-                _speed = 0;
-            }
-            else
-            {
-                return;
-            }
-        }
-
-		// Jump
-		if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKey(KeyCode.Space))
-		{
-			Jump();
-		}
 	}
 
-    void healthAdjust(int val)
+    public void healthAdjust(int val)
     {
         if (_currenthealth != _maxhealth * 2)
             _currenthealth += val;
@@ -169,7 +150,6 @@ public class PlayerManager : MonoBehaviour
 			_myAnim.SetInteger ("State", 0);
 		}
 	}
-		
 	// Code to flip the player when facing left and right
 	void Flip()
 	{
@@ -183,7 +163,6 @@ public class PlayerManager : MonoBehaviour
 		}
 
 	}
-
 	/// <summary>
 	/// This method is called when the player collides with another object
 	/// </summary>
