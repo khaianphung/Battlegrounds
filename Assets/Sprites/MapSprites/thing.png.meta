@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 20ea684f253680b4293f4d4e352bda6e
-timeCreated: 1518464936
+guid: 36957394f48d5a9478b9f77ccee083d4
+timeCreated: 1518723412
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName: {}
@@ -81,5 +81,5 @@ TextureImporter:
       - {x: 2, y: -2}
   spritePackingTag: 
   userData: 
-  assetBundleName: 
+  assetBundleName: pacmap
   assetBundleVariant: 
