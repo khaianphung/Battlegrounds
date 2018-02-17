@@ -22,6 +22,9 @@ public class PlayerManager : MonoBehaviour
 
 	public float speedX, jumpSpeedY;
 
+	public GameObject bullet;
+	public Transform firePoint;
+
 	// Initializing variables
 	void Start () 
 	{
@@ -86,9 +89,13 @@ public class PlayerManager : MonoBehaviour
 		}
 
 		// Jump
-		if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKey(KeyCode.Space))
+		if (Input.GetKeyDown(KeyCode.UpArrow))
 		{
 			Jump();
+		}
+		if (Input.GetKeyDown (KeyCode.Space) || Input.GetKey (KeyCode.Space))
+		{
+			Instantiate (bullet, firePoint.position, firePoint.rotation);
 		}
 	}
 
