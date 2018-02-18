@@ -22,6 +22,9 @@ public class PlayerManager : MonoBehaviour
 
 	public float speedX, jumpSpeedY;
 
+	public GameObject bullet;
+	public Transform firePoint;
+
 	// Initializing variables
 	void Start () 
 	{
@@ -90,12 +93,55 @@ public class PlayerManager : MonoBehaviour
             Destroy(gameObject);
             Application.LoadLevel(Application.loadedLevel);
         }
+<<<<<<< HEAD
 	}
 	void FixedUpdate()
 	{
 		// Joystick controls
 		Vector2 moveVec = new Vector2 (CrossPlatformInputManager.GetAxis ("Horizontal"), CrossPlatformInputManager.GetAxis ("Vertical")) * speedX;
 		Debug.Log (moveVec);
+=======
+
+		// Keyboard controls
+		// Left player movement
+		if (Input.GetKeyDown (KeyCode.LeftArrow)) 
+		{
+			_speed = -speedX;
+		} // Idle
+		if (Input.GetKeyUp (KeyCode.LeftArrow)) 
+		{
+			_speed = 0;
+		}
+
+		// Right player movement
+		if (Input.GetKeyDown (KeyCode.RightArrow)) 
+		{
+			_speed = speedX;
+		} // Idle
+		if (Input.GetKeyUp (KeyCode.RightArrow)) 
+		{
+			_speed = 0;
+		}
+
+		// Jump
+		if (Input.GetKeyDown(KeyCode.UpArrow))
+		{
+			Jump();
+		}
+		if (Input.GetKeyDown (KeyCode.Space) || Input.GetKey (KeyCode.Space))
+		{
+			Instantiate (bullet, firePoint.position, firePoint.rotation);
+		}
+	}
+
+	void FixedUpdate()
+	{
+		Vector2 moveVec = new Vector2 (CrossPlatformInputManager.GetAxis ("Horizontal"), CrossPlatformInputManager.GetAxis ("Vertical")) * speedX;
+		MovePlayer (_speed);
+		Flip ();
+
+		// Joystick controls
+>>>>>>> origin/testing/beta
 		if(moveVec.x > 0){
 			_speed = speedX;
 		}
@@ -105,10 +151,25 @@ public class PlayerManager : MonoBehaviour
 		if(moveVec.x == 0){
 			_speed = 0;
 		}
+<<<<<<< HEAD
 		if(moveVec.y > 10){
 			Jump ();
 		}
 	}
+=======
+		if(moveVec.y > 67){
+			Jump ();
+		}
+			
+	}
+
+    public void healthAdjust(int val)
+    {
+        if (_currenthealth != _maxhealth * 2)
+            _currenthealth += val;
+    }
+		
+>>>>>>> origin/testing/beta
 		
 	/// <summary>
 	/// Player movement and animation
@@ -160,7 +221,6 @@ public class PlayerManager : MonoBehaviour
 			_myAnim.SetInteger("State", 2);
 		}
 	}
-
 	/// <summary>
 	/// This method is called when the player collides with another object
 	/// </summary>
