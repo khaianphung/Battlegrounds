@@ -69,7 +69,7 @@ public class PlayerManager : MonoBehaviour
 		}
 
 		// Jump
-		if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKey(KeyCode.Space))
+		if (Input.GetKeyDown(KeyCode.UpArrow))
 		{
 			Jump();
 		}
@@ -93,14 +93,12 @@ public class PlayerManager : MonoBehaviour
             Destroy(gameObject);
             Application.LoadLevel(Application.loadedLevel);
         }
-<<<<<<< HEAD
 	}
 	void FixedUpdate()
 	{
 		// Joystick controls
 		Vector2 moveVec = new Vector2 (CrossPlatformInputManager.GetAxis ("Horizontal"), CrossPlatformInputManager.GetAxis ("Vertical")) * speedX;
 		Debug.Log (moveVec);
-=======
 
 		// Keyboard controls
 		// Left player movement
@@ -128,20 +126,16 @@ public class PlayerManager : MonoBehaviour
 		{
 			Jump();
 		}
-		if (Input.GetKeyDown (KeyCode.Space) || Input.GetKey (KeyCode.Space))
+
+		if (Input.GetKeyDown(KeyCode.Space))
 		{
 			Instantiate (bullet, firePoint.position, firePoint.rotation);
 		}
-	}
 
-	void FixedUpdate()
-	{
-		Vector2 moveVec = new Vector2 (CrossPlatformInputManager.GetAxis ("Horizontal"), CrossPlatformInputManager.GetAxis ("Vertical")) * speedX;
 		MovePlayer (_speed);
 		Flip ();
 
 		// Joystick controls
->>>>>>> origin/testing/beta
 		if(moveVec.x > 0){
 			_speed = speedX;
 		}
@@ -151,12 +145,9 @@ public class PlayerManager : MonoBehaviour
 		if(moveVec.x == 0){
 			_speed = 0;
 		}
-<<<<<<< HEAD
 		if(moveVec.y > 10){
 			Jump ();
 		}
-	}
-=======
 		if(moveVec.y > 67){
 			Jump ();
 		}
@@ -168,8 +159,6 @@ public class PlayerManager : MonoBehaviour
         if (_currenthealth != _maxhealth * 2)
             _currenthealth += val;
     }
-		
->>>>>>> origin/testing/beta
 		
 	/// <summary>
 	/// Player movement and animation
@@ -241,9 +230,4 @@ public class PlayerManager : MonoBehaviour
             _currenthealth = _currenthealth - 10;
         }
     }
-	void healthAdjust(int val)
-	{
-		if (_currenthealth != _maxhealth * 2)
-			_currenthealth += val;
-	}
 }
