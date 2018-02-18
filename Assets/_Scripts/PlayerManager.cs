@@ -17,10 +17,21 @@ public class PlayerManager : MonoBehaviour
 	private Rigidbody2D _myRigidBody;			// Player's rigidbody
 	private AudioSource[] _myAduioArray;		// Player's set of audios stored in an array
 	private float _speed, _maxhealth, _currenthealth, _healthbarlength;
-	private bool _jumping, _facingRight, _grounded, _dead;
+	private bool _jumping, _grounded, _dead;
     private int _decay;
 
-	public float speedX, jumpSpeedY;
+    public bool _facingRight;
+
+
+    //AttackVariable
+    private int previousState;
+    private float timer;
+    public Transform projectile;
+    public bool enableInput;
+
+
+
+    public float speedX, jumpSpeedY;
 
 	public GameObject bullet;
 	public Transform firePoint;
@@ -30,13 +41,19 @@ public class PlayerManager : MonoBehaviour
 	{
 		_myAnim = GetComponent<Animator> ();
 		_myRigidBody = GetComponent<Rigidbody2D> ();
-		_facingRight = _grounded = true;
+        _facingRight = false;
+        _grounded = true;
 		_jumping = _dead = false;
         _maxhealth = 100;
         _currenthealth = 100;
         _decay = 0;
         _healthbarlength = Screen.width / 3;
-	}
+        _myRigidBody.freezeRotation = true;
+        enableInput = true;
+
+
+
+    }
     //Should maybe moved to GUI once that module is done
     //Load GUI for healthbar
     void OnGUI()
@@ -45,34 +62,14 @@ public class PlayerManager : MonoBehaviour
     }
 	void Update () 
 	{
-		MovePlayer (_speed);
-		Flip ();
-		// Keyboard controls
-		// Left player movement
-		if (Input.GetKeyDown (KeyCode.LeftArrow)) 
-		{
-			_speed = -speedX;
-		} // Idle
-		if (Input.GetKeyUp (KeyCode.LeftArrow)) 
-		{
-			_speed = 0;
-		}
+        // Keyboard controls
+        // Left player movement
 
-		// Right player movement
-		if (Input.GetKeyDown (KeyCode.RightArrow)) 
-		{
-			_speed = speedX;
-		} // Idle
-		if (Input.GetKeyUp (KeyCode.RightArrow)) 
-		{
-			_speed = 0;
-		}
-
-		// Jump
-		if (Input.GetKeyDown(KeyCode.UpArrow))
-		{
-			Jump();
-		}
+     
+        
+        //GetHP from other script
+        _maxhealth = GetComponent<PlayerHitManager>().maxHP;
+        _currenthealth = GetComponent<PlayerHitManager>().currentHP;
 
         //Overheal?
         if (_currenthealth > _maxhealth)
@@ -80,7 +77,7 @@ public class PlayerManager : MonoBehaviour
             _decay++;
             if (_decay == 60)
             {
-                _currenthealth--;
+                GetComponent<PlayerHitManager>().currentHP--;
                 _decay = 0;
             }
         }
@@ -93,64 +90,102 @@ public class PlayerManager : MonoBehaviour
             Destroy(gameObject);
             Application.LoadLevel(Application.loadedLevel);
         }
+
+
 	}
 	void FixedUpdate()
 	{
 		// Joystick controls
 		Vector2 moveVec = new Vector2 (CrossPlatformInputManager.GetAxis ("Horizontal"), CrossPlatformInputManager.GetAxis ("Vertical")) * speedX;
-		Debug.Log (moveVec);
+		//Debug.Log (moveVec);
 
-		// Keyboard controls
-		// Left player movement
-		if (Input.GetKeyDown (KeyCode.LeftArrow)) 
-		{
-			_speed = -speedX;
-		} // Idle
-		if (Input.GetKeyUp (KeyCode.LeftArrow)) 
-		{
-			_speed = 0;
-		}
+        if (enableInput)
+        {
+            if (Input.GetKey(KeyCode.UpArrow) && _grounded)
+            {
+                Jump();
+            }
+            else if (Input.GetKey(KeyCode.LeftArrow))
+            {
+                if (_facingRight)
+                {
+                    Flip();
+                }
+                _speed = -speedX;
+            }
+            else if (Input.GetKey(KeyCode.RightArrow))
+            {
+                if (!_facingRight)
+                {
+                    Flip();
+                }
+                _speed = speedX;
+            }
+            else if (Input.GetKey(KeyCode.DownArrow) && _grounded)
+            {
+                _myAnim.SetInteger("State", 4);
+            }
+            else
+            {
+                if (!_grounded)
+                {
+                    _myAnim.SetInteger("State", 2);
+                }
+                else
+                {
+                    _myAnim.SetInteger("State", 0);
+                }
+            }
 
-		// Right player movement
-		if (Input.GetKeyDown (KeyCode.RightArrow)) 
-		{
-			_speed = speedX;
-		} // Idle
-		if (Input.GetKeyUp (KeyCode.RightArrow)) 
-		{
-			_speed = 0;
-		}
+            MovePlayer(_speed);
 
-		// Jump
-		if (Input.GetKeyDown(KeyCode.UpArrow))
-		{
-			Jump();
-		}
+            //Attack and Animation Control
+            if (Input.GetKey(KeyCode.M))
+            {
+                MeleeAttack();
+                previousState = 3;
+            }
+            else if (Input.GetKey(KeyCode.N))
+            {
+                Shoot();
+                previousState = 7;
+            }
+            else
+            {
+                if (previousState == 3)
+                {
+                    _myAnim.SetInteger("AttackState", 9);
+                }
+                else if (previousState == 7)
+                {
+                    _myAnim.SetInteger("AttackState", 8);
+                }
+            }
+            // Joystick controls
+            if (moveVec.x > 0)
+            {
+                _speed = speedX;
+            }
+            if (moveVec.x < 0)
+            {
+                _speed = -speedX;
+            }
+            if (moveVec.x == 0)
+            {
+                _speed = 0;
+            }
+            if (moveVec.y > 10)
+            {
+                //Jump ();
+            }
+            if (moveVec.y > 67)
+            {
+                //Jump ();
+            }
+        }
 
-		if (Input.GetKeyDown(KeyCode.Space))
-		{
-			Instantiate (bullet, firePoint.position, firePoint.rotation);
-		}
 
-		MovePlayer (_speed);
-		Flip ();
-
-		// Joystick controls
-		if(moveVec.x > 0){
-			_speed = speedX;
-		}
-		if(moveVec.x < 0){
-			_speed = -speedX;
-		}
-		if(moveVec.x == 0){
-			_speed = 0;
-		}
-		if(moveVec.y > 10){
-			Jump ();
-		}
-		if(moveVec.y > 67){
-			Jump ();
-		}
+        
 			
 	}
 
@@ -181,23 +216,16 @@ public class PlayerManager : MonoBehaviour
 			_myAnim.SetInteger ("State", 1);
 		}
 
-		// Player idle
-		if (playerSpeed == 0 && !_jumping) 
-		{
-			_myAnim.SetInteger ("State", 0);
-		}
 	}
 	// Code to flip the player when facing left and right
 	void Flip()
 	{
-		if(_speed > 0 && !_facingRight || _speed < 0 && _facingRight)
-		{
+
 			_facingRight = !_facingRight;
 
 			Vector3 temp = transform.localScale;
 			temp.x *= -1;
 			transform.localScale = temp;
-		}
 	}
 	// Jumping method
 	void Jump()
@@ -207,7 +235,6 @@ public class PlayerManager : MonoBehaviour
 			_jumping = true;
 			_grounded = false;
 			_myRigidBody.velocity = (new Vector2(_myRigidBody.velocity.x, jumpSpeedY));
-			_myAnim.SetInteger("State", 2);
 		}
 	}
 	/// <summary>
@@ -218,10 +245,21 @@ public class PlayerManager : MonoBehaviour
 	{
 		if (other.gameObject.tag == "Ground")
 		{
-			_myAnim.SetInteger("State", 0);
 			_jumping = false;
 			_grounded = true;
 		}
+        if (other.gameObject.tag == "Player")
+        {
+            _myRigidBody.velocity = Vector2.zero;
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D other)
+    {
+        if (other.gameObject.tag == "Player")
+        {
+            _myRigidBody.mass = 1;
+        }
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -229,5 +267,26 @@ public class PlayerManager : MonoBehaviour
         {
             _currenthealth = _currenthealth - 10;
         }
+    }
+
+
+    void MeleeAttack()
+    {
+        _myAnim.SetInteger("AttackState", 3);
+
+    }
+
+    void Shoot()
+    {
+        timer -= Time.deltaTime;
+        if (timer <= 0f)
+        {
+            Vector3 pos = transform.position;
+            var bullet = Instantiate(projectile, pos, Quaternion.identity);
+            bullet.GetComponent<ProjectileControl>().isFacingRight = _facingRight;
+            Physics2D.IgnoreCollision(bullet.GetComponent<Collider2D>(), transform.Find("Body").GetComponent<Collider2D>());
+            timer = 0.2f;
+        }
+        _myAnim.SetInteger("AttackState", 7);
     }
 }
