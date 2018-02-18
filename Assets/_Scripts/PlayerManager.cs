@@ -34,16 +34,43 @@ public class PlayerManager : MonoBehaviour
         _decay = 0;
         _healthbarlength = Screen.width / 3;
 	}
-	
     //Should maybe moved to GUI once that module is done
     //Load GUI for healthbar
     void OnGUI()
     {
         GUI.Box(new Rect(10, 10, _healthbarlength, 20), _currenthealth + "/" + _maxhealth);
     }
-
 	void Update () 
 	{
+		MovePlayer (_speed);
+		Flip ();
+		// Keyboard controls
+		// Left player movement
+		if (Input.GetKeyDown (KeyCode.LeftArrow)) 
+		{
+			_speed = -speedX;
+		} // Idle
+		if (Input.GetKeyUp (KeyCode.LeftArrow)) 
+		{
+			_speed = 0;
+		}
+
+		// Right player movement
+		if (Input.GetKeyDown (KeyCode.RightArrow)) 
+		{
+			_speed = speedX;
+		} // Idle
+		if (Input.GetKeyUp (KeyCode.RightArrow)) 
+		{
+			_speed = 0;
+		}
+
+		// Jump
+		if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKey(KeyCode.Space))
+		{
+			Jump();
+		}
+
         //Overheal?
         if (_currenthealth > _maxhealth)
         {
@@ -64,14 +91,11 @@ public class PlayerManager : MonoBehaviour
             Application.LoadLevel(Application.loadedLevel);
         }
 	}
-
 	void FixedUpdate()
 	{
-		Vector2 moveVec = new Vector2 (CrossPlatformInputManager.GetAxis ("Horizontal"), CrossPlatformInputManager.GetAxis ("Vertical")) * speedX;
-		MovePlayer (_speed);
-		Flip ();
-
 		// Joystick controls
+		Vector2 moveVec = new Vector2 (CrossPlatformInputManager.GetAxis ("Horizontal"), CrossPlatformInputManager.GetAxis ("Vertical")) * speedX;
+		Debug.Log (moveVec);
 		if(moveVec.x > 0){
 			_speed = speedX;
 		}
@@ -81,78 +105,22 @@ public class PlayerManager : MonoBehaviour
 		if(moveVec.x == 0){
 			_speed = 0;
 		}
-		if(moveVec.y > 67){
+		if(moveVec.y > 10){
 			Jump ();
 		}
-
-		// Keyboard controls
-		// Left player movement
-		if (Input.GetKeyDown (KeyCode.LeftArrow)) 
-		{
-			_speed = -speedX;
-		} // Idle
-		if (Input.GetKeyUp (KeyCode.LeftArrow)) 
-		{
-<<<<<<< HEAD
-			_speed = 0;
-		}
-
-=======
-            if (!_jumping)
-            {
-                _speed = 0;
-            }
-            else
-            {
-                return;
-            }
-        }
-			
->>>>>>> origin/testing/beta
-		// Right player movement
-		if (Input.GetKeyDown (KeyCode.RightArrow)) 
-		{
-			_speed = speedX;
-		} // Idle
-		if (Input.GetKeyUp (KeyCode.RightArrow)) 
-		{
-            if (!_jumping)
-            {
-                _speed = 0;
-            }
-            else
-            {
-                return;
-            }
-        }
-
-		// Jump
-		if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKey(KeyCode.Space))
-		{
-			Jump();
-		}
 	}
-
-    void healthAdjust(int val)
-    {
-        if (_currenthealth != _maxhealth * 2)
-            _currenthealth += val;
-    }
-		
 		
 	/// <summary>
 	/// Player movement and animation
+	/// Animator States
+	/// State 0 = Idle
+	/// State 1 = Walk/Run
+	/// State 2 = Jump
+	/// State 3 = Attack
+	/// State 4 = Crouch
+	/// State 5 = Dying
 	/// </summary>
 	/// <param name="playerSpeed">Player speed.</param>
-
-	// Animator States
-	// State 0 = Idle
-	// State 1 = Walk/Run
-	// State 2 = Jump
-	// State 3 = Attack
-	// State 4 = Crouch
-	// State 5 = Dying
-
 	void MovePlayer(float playerSpeed)
 	{
 		_myRigidBody.velocity = new Vector3 (_speed, _myRigidBody.velocity.y, 0);
@@ -169,7 +137,6 @@ public class PlayerManager : MonoBehaviour
 			_myAnim.SetInteger ("State", 0);
 		}
 	}
-		
 	// Code to flip the player when facing left and right
 	void Flip()
 	{
@@ -181,7 +148,17 @@ public class PlayerManager : MonoBehaviour
 			temp.x *= -1;
 			transform.localScale = temp;
 		}
-
+	}
+	// Jumping method
+	void Jump()
+	{
+		if (_grounded && !_dead)
+		{
+			_jumping = true;
+			_grounded = false;
+			_myRigidBody.velocity = (new Vector2(_myRigidBody.velocity.x, jumpSpeedY));
+			_myAnim.SetInteger("State", 2);
+		}
 	}
 
 	/// <summary>
@@ -204,27 +181,9 @@ public class PlayerManager : MonoBehaviour
             _currenthealth = _currenthealth - 10;
         }
     }
-    // Phone Mobile Interface Button Triggers
-    public void WalkLeft()
+	void healthAdjust(int val)
 	{
-		_speed = -speedX;
-	}
-	public void WalkRight()
-	{
-		_speed = speedX;
-	}
-	public void Idle()
-	{
-		_speed = 0;
-	}
-	public void Jump()
-	{
-		if (_grounded && !_dead)
-		{
-			_jumping = true;
-			_grounded = false;
-			_myRigidBody.velocity = (new Vector2(_myRigidBody.velocity.x, jumpSpeedY));
-			_myAnim.SetInteger("State", 2);
-		}
+		if (_currenthealth != _maxhealth * 2)
+			_currenthealth += val;
 	}
 }
