@@ -1489,6 +1489,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speedX: 250
   jumpSpeedY: 400
+  bullet: {fileID: 0}
+  firePoint: {fileID: 0}
 --- !u!61 &496237815
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1529,7 +1531,7 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 30
-  m_Material: {fileID: 6200000, guid: 57b641ac862aece4487ba1ed92550bf3, type: 2}
+  m_Material: {fileID: 6200000, guid: 3080aad5aa645e24f9dd091ce60da70f, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
