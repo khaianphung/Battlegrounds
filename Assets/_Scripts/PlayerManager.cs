@@ -89,10 +89,12 @@ public class PlayerManager : MonoBehaviour
             
             _dead = true;
             _speed = 0;
-            Application.LoadLevel(Application.loadedLevel);
+
+            FindObjectOfType<AudioManager>().Play("PlayerDeath");
             Destroy(gameObject);
-            
-           
+            Application.LoadLevel(Application.loadedLevel);
+
+
         }
 
        
@@ -111,6 +113,7 @@ public class PlayerManager : MonoBehaviour
             }
             else if (Input.GetKey(KeyCode.LeftArrow))
             {
+                FindObjectOfType<AudioManager>().Play("Walk");
                 if (_facingRight)
                 {
                     Flip();
@@ -119,6 +122,7 @@ public class PlayerManager : MonoBehaviour
             }
             else if (Input.GetKey(KeyCode.RightArrow))
             {
+                FindObjectOfType<AudioManager>().Play("Walk");
                 if (!_facingRight)
                 {
                     Flip();
@@ -152,6 +156,7 @@ public class PlayerManager : MonoBehaviour
             else if (Input.GetKey(KeyCode.N))
             {
                 Shoot();
+               
                 previousState = 7;
             }
             else
@@ -219,9 +224,9 @@ public class PlayerManager : MonoBehaviour
 	void MovePlayer(float playerSpeed)
 	{
 		_myRigidBody.velocity = new Vector3 (_speed, _myRigidBody.velocity.y, 0);
-
-		// Player walk/run
-		if (playerSpeed < 0 && !_jumping || playerSpeed > 0 && !_jumping) 
+       
+        // Player walk/run
+        if (playerSpeed < 0 && !_jumping || playerSpeed > 0 && !_jumping) 
 		{
 			_myAnim.SetInteger ("State", 1);
 		}
@@ -245,7 +250,8 @@ public class PlayerManager : MonoBehaviour
 			_jumping = true;
 			_grounded = false;
 			_myRigidBody.velocity = (new Vector2(_myRigidBody.velocity.x, jumpSpeedY));
-		}
+            FindObjectOfType<AudioManager>().Play("Jump");
+        }
 	}
 	/// <summary>
 	/// This method is called when the player collides with another object
@@ -282,12 +288,17 @@ public class PlayerManager : MonoBehaviour
 
     void MeleeAttack()
     {
+       
+        FindObjectOfType<AudioManager>().Play("Punch");
+       
         _myAnim.SetInteger("AttackState", 3);
+       
 
     }
 
     void Shoot()
     {
+        
         timer -= Time.deltaTime;
         if (timer <= 0f)
         {
@@ -296,6 +307,7 @@ public class PlayerManager : MonoBehaviour
             bullet.GetComponent<ProjectileControl>().isFacingRight = _facingRight;
             Physics2D.IgnoreCollision(bullet.GetComponent<Collider2D>(), transform.Find("Body").GetComponent<Collider2D>());
             timer = 0.2f;
+            FindObjectOfType<AudioManager>().Play("Shoot");
         }
         _myAnim.SetInteger("AttackState", 7);
     }
