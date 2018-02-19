@@ -16,7 +16,8 @@ public class PlayerManager : MonoBehaviour
 	private Animator _myAnim;					// Player's animator
 	private Rigidbody2D _myRigidBody;			// Player's rigidbody
 	private AudioSource[] _myAduioArray;		// Player's set of audios stored in an array
-	private float _speed, _maxhealth, _currenthealth, _healthbarlength;
+	private float _speed, _maxhealth =100
+        , _currenthealth, _healthbarlength;
 	private bool _jumping, _grounded, _dead;
     private int _decay;
 
@@ -35,7 +36,7 @@ public class PlayerManager : MonoBehaviour
 
 	public GameObject bullet;
 	public Transform firePoint;
-
+    
 	// Initializing variables
 	void Start () 
 	{
@@ -44,8 +45,8 @@ public class PlayerManager : MonoBehaviour
         _facingRight = false;
         _grounded = true;
 		_jumping = _dead = false;
-        _maxhealth = 100;
-        _currenthealth = 100;
+        
+        _currenthealth = _maxhealth;
         _decay = 0;
         _healthbarlength = Screen.width / 3;
         _myRigidBody.freezeRotation = true;
@@ -85,13 +86,16 @@ public class PlayerManager : MonoBehaviour
         //Check Dead
         if (_currenthealth <= 0)
         {
+            
             _dead = true;
             _speed = 0;
-            Destroy(gameObject);
             Application.LoadLevel(Application.loadedLevel);
+            Destroy(gameObject);
+            
+           
         }
 
-
+       
 	}
 	void FixedUpdate()
 	{
@@ -189,6 +193,12 @@ public class PlayerManager : MonoBehaviour
 			
 	}
 
+
+    void Die()
+    {
+        //restart
+        Application.LoadLevel(Application.loadedLevel);
+    }
     public void healthAdjust(int val)
     {
         if (_currenthealth != _maxhealth * 2)
