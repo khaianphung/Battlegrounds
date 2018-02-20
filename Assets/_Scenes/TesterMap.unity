@@ -1492,13 +1492,8 @@ MonoBehaviour:
   enableInput: 0
   speedX: 250
   jumpSpeedY: 400
-<<<<<<< HEAD
   bullet: {fileID: 0}
   firePoint: {fileID: 0}
-=======
-  bullet: {fileID: 1578475769020222, guid: 0ccc779d6e1573a46b6fda7cded72dca, type: 2}
-  firePoint: {fileID: 1021329163}
->>>>>>> origin/testing/beta
 --- !u!61 &496237815
 BoxCollider2D:
   m_ObjectHideFlags: 0

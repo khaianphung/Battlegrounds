@@ -62,50 +62,13 @@ public class PlayerManager : MonoBehaviour
     }
 	void Update () 
 	{
-<<<<<<< HEAD
-		MovePlayer (_speed);
-		Flip ();
 
-		// Keyboard controls
-		// Left player movement
-		if (Input.GetKeyDown (KeyCode.LeftArrow)) 
-		{
-			_speed = -speedX;
-		} // Idle
-		if (Input.GetKeyUp (KeyCode.LeftArrow)) 
-		{
-			_speed = 0;
-		}
-
-		// Right player movement
-		if (Input.GetKeyDown (KeyCode.RightArrow)) 
-		{
-			_speed = speedX;
-		} // Idle
-		if (Input.GetKeyUp (KeyCode.RightArrow)) 
-		{
-			_speed = 0;
-		}
-
-		// Jump
-		if (Input.GetKeyDown(KeyCode.UpArrow))
-		{
-			Jump();
-		}
-		if (Input.GetKeyDown (KeyCode.Space) || Input.GetKey (KeyCode.Space))
-		{
-			Instantiate (bullet, firePoint.position, firePoint.rotation);
-		}
-=======
-        // Keyboard controls
-        // Left player movement
 
      
         
         //GetHP from other script
         _maxhealth = GetComponent<PlayerHitManager>().maxHP;
         _currenthealth = GetComponent<PlayerHitManager>().currentHP;
->>>>>>> origin/testing/beta
 
         //Overheal?
         if (_currenthealth > _maxhealth)
@@ -126,34 +89,11 @@ public class PlayerManager : MonoBehaviour
             Destroy(gameObject);
             Application.LoadLevel(Application.loadedLevel);
         }
-<<<<<<< HEAD
-=======
-
-
->>>>>>> origin/testing/beta
 	}
 	void FixedUpdate()
 	{
 		// Joystick controls
 		Vector2 moveVec = new Vector2 (CrossPlatformInputManager.GetAxis ("Horizontal"), CrossPlatformInputManager.GetAxis ("Vertical")) * speedX;
-<<<<<<< HEAD
-		Debug.Log (moveVec);
-		// Joystick controls
-		if(moveVec.x > 0){
-			_speed = speedX;
-		}
-		if(moveVec.x < 0){
-			_speed = -speedX;
-		}
-		if(moveVec.x == 0){
-			_speed = 0;
-		}
-		if(moveVec.y > 10){
-			Jump ();
-		}
-	}
-=======
-		//Debug.Log (moveVec);
 
         if (enableInput)
         {
@@ -251,7 +191,6 @@ public class PlayerManager : MonoBehaviour
             _currenthealth += val;
     }
 		
->>>>>>> origin/testing/beta
 	/// <summary>
 	/// Player movement and animation
 	/// Animator States
@@ -325,13 +264,7 @@ public class PlayerManager : MonoBehaviour
             _currenthealth = _currenthealth - 10;
         }
     }
-<<<<<<< HEAD
-	public void healthAdjust(int val)
-	{
-		if (_currenthealth != _maxhealth * 2)
-			_currenthealth += val;
-	}
-=======
+
 
 
     void MeleeAttack()
@@ -353,5 +286,4 @@ public class PlayerManager : MonoBehaviour
         }
         _myAnim.SetInteger("AttackState", 7);
     }
->>>>>>> origin/testing/beta
 }
