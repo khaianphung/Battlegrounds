@@ -30,7 +30,7 @@ public class PlayerManager : MonoBehaviour
 
 
 
-    public float speedX, jumpSpeedY;
+	public float speedX, jumpSpeedY;
 
 	public GameObject bullet;
 	public Transform firePoint;
