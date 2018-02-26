@@ -5,6 +5,10 @@ using UnityEngine;
 public class PlayerHitManager : MonoBehaviour {
     public float maxHP;
     public float currentHP;
+    public GameObject Player;
+    //PlayerManager PM;
+
+   
 
     float meleeKnockBackX, meleeKnockBackY, projectileKnockBackX, projectileKnockBackY;
 
@@ -24,6 +28,8 @@ public class PlayerHitManager : MonoBehaviour {
         rigidbody = GetComponent<Rigidbody2D>();
         rigidbody.freezeRotation = true;
         spawnPoint = "SpawnPoint";
+
+        //PM = Player.GetComponent<PlayerManager>();
     }
     private void FixedUpdate()
     {
@@ -63,6 +69,15 @@ public class PlayerHitManager : MonoBehaviour {
             
         anima.SetInteger("State", 6);
         isGrounded = false;
+    }
+
+    
+    public void Damage(float dmg)
+    {
+        currentHP  = currentHP - dmg;
+        Debug.Log("Damage Works");
+         
+      
     }
     void OnCollisionEnter2D(Collision2D col)
     {

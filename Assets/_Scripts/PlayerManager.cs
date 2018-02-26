@@ -16,7 +16,7 @@ public class PlayerManager : MonoBehaviour
 	private Animator _myAnim;					// Player's animator
 	private Rigidbody2D _myRigidBody;			// Player's rigidbody
 	private AudioSource[] _myAduioArray;		// Player's set of audios stored in an array
-	private float _speed, _maxhealth =100
+	private float _speed, _maxhealth = 100
         , _currenthealth, _healthbarlength;
 	private bool _jumping, _grounded, _dead;
     private int _decay;
@@ -150,6 +150,7 @@ public class PlayerManager : MonoBehaviour
             //Attack and Animation Control
             if (Input.GetKey(KeyCode.M))
             {
+                FindObjectOfType<AudioManager>().Play("Punch");
                 MeleeAttack();
                 previousState = 3;
             }
@@ -277,6 +278,7 @@ public class PlayerManager : MonoBehaviour
             _myRigidBody.mass = 1;
         }
     }
+    /*
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.gameObject.tag == "Spike")
@@ -284,17 +286,20 @@ public class PlayerManager : MonoBehaviour
             _currenthealth = _currenthealth - 10;
         }
     }
+    */
 
 
     void MeleeAttack()
     {
        
-        FindObjectOfType<AudioManager>().Play("Punch");
+     
        
         _myAnim.SetInteger("AttackState", 3);
        
 
     }
+
+   
 
     void Shoot()
     {
