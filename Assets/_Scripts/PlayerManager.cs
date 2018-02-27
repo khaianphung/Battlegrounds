@@ -22,7 +22,6 @@ public class PlayerManager : MonoBehaviour
 
     public bool _facingRight;
 
-
     //AttackVariable
     private int previousState;
     private float timer;
@@ -50,9 +49,6 @@ public class PlayerManager : MonoBehaviour
         _healthbarlength = Screen.width / 3;
         _myRigidBody.freezeRotation = true;
         enableInput = true;
-
-
-
     }
     //Should maybe moved to GUI once that module is done
     //Load GUI for healthbar
@@ -62,10 +58,6 @@ public class PlayerManager : MonoBehaviour
     }
 	void Update () 
 	{
-
-
-     
-        
         //GetHP from other script
         _maxhealth = GetComponent<PlayerHitManager>().maxHP;
         _currenthealth = GetComponent<PlayerHitManager>().currentHP;
@@ -92,9 +84,7 @@ public class PlayerManager : MonoBehaviour
 	}
 	void FixedUpdate()
 	{
-		// Joystick controls
-		Vector2 moveVec = new Vector2 (CrossPlatformInputManager.GetAxis ("Horizontal"), CrossPlatformInputManager.GetAxis ("Vertical")) * speedX;
-
+		
         if (enableInput)
         {
             if (Input.GetKey(KeyCode.UpArrow) && _grounded)
@@ -157,13 +147,23 @@ public class PlayerManager : MonoBehaviour
                     _myAnim.SetInteger("AttackState", 8);
                 }
             }
-            // Joystick controls
+
+			// Joystick controls
+			Vector2 moveVec = new Vector2 (CrossPlatformInputManager.GetAxis ("Horizontal"), CrossPlatformInputManager.GetAxis ("Vertical")) * speedX;
             if (moveVec.x > 0)
             {
+				if (!_facingRight)
+				{
+					Flip();
+				}
                 _speed = speedX;
             }
             if (moveVec.x < 0)
             {
+				if (_facingRight)
+				{
+					Flip();
+				}
                 _speed = -speedX;
             }
             if (moveVec.x == 0)
@@ -172,16 +172,9 @@ public class PlayerManager : MonoBehaviour
             }
             if (moveVec.y > 10)
             {
-                //Jump ();
-            }
-            if (moveVec.y > 67)
-            {
-                //Jump ();
+                Jump ();
             }
         }
-
-
-        
 			
 	}
 
@@ -216,12 +209,10 @@ public class PlayerManager : MonoBehaviour
 	// Code to flip the player when facing left and right
 	void Flip()
 	{
-
-			_facingRight = !_facingRight;
-
-			Vector3 temp = transform.localScale;
-			temp.x *= -1;
-			transform.localScale = temp;
+		_facingRight = !_facingRight;
+		Vector3 temp = transform.localScale;
+		temp.x *= -1;
+		transform.localScale = temp;
 	}
 	// Jumping method
 	void Jump()
@@ -264,15 +255,10 @@ public class PlayerManager : MonoBehaviour
             _currenthealth = _currenthealth - 10;
         }
     }
-
-
-
     void MeleeAttack()
     {
         _myAnim.SetInteger("AttackState", 3);
-
     }
-
     void Shoot()
     {
         timer -= Time.deltaTime;
