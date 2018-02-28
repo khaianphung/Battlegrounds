@@ -2974,23 +2974,9 @@ GameObject:
   m_PrefabInternal: {fileID: 1866510608}
 --- !u!4 &906236695 stripped
 Transform:
-<<<<<<< HEAD
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 906236694}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -42, y: 119.7, z: 414.15247}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1971173834}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-=======
   m_PrefabParentObject: {fileID: 4977961509114056, guid: be0b689e7514b8945826ab03e5df597a,
     type: 2}
   m_PrefabInternal: {fileID: 1866510608}
->>>>>>> origin/testing/beta
 --- !u!1 &945076561
 GameObject:
   m_ObjectHideFlags: 0
@@ -3565,19 +3551,11 @@ Prefab:
       propertyPath: firePoint
       value: 
       objectReference: {fileID: 1021329163}
-<<<<<<< HEAD
-    - target: {fileID: 50565496018971044, guid: 592a301d4677fca429b5f9421535e32b,
-        type: 2}
-      propertyPath: m_Material
-      value: 
-      objectReference: {fileID: 6200000, guid: 3080aad5aa645e24f9dd091ce60da70f, type: 2}
-=======
     - target: {fileID: 114556385822137290, guid: 592a301d4677fca429b5f9421535e32b,
         type: 2}
       propertyPath: spawnPoint
       value: RespawnPoint
       objectReference: {fileID: 0}
->>>>>>> origin/testing/beta
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 592a301d4677fca429b5f9421535e32b, type: 2}
   m_IsPrefabParent: 0
