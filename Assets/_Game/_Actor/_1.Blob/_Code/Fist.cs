@@ -11,7 +11,7 @@ public class Fist : MonoBehaviour {
     }
     void OnCollisionEnter2D(Collision2D col)
     {
-        Debug.Log("Fist Collision");
+        //Debug.Log("Fist Collision");
         if (col.gameObject.tag == "Player")
         {
             col.gameObject.GetComponent<PlayerHitManager>().GetHit(damage, transform.parent.parent.GetComponent<PlayerManager>()._facingRight);

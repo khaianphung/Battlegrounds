@@ -8,14 +8,8 @@ public class LevelManager : MonoBehaviour {
 
     private PlayerManager player;
 
-	// Use this for initialization
 	void Start () {
         player = FindObjectOfType<PlayerManager>();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
 	}
 
     public void RespawnPlayer()

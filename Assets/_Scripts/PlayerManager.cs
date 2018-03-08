@@ -239,6 +239,24 @@ public class PlayerManager : MonoBehaviour
         {
             _myRigidBody.velocity = Vector2.zero;
         }
+
+		Collider2D collider = other.collider; // collider of object that is gonna collide with the Player
+		float rectWidth = this.GetComponentInChildren<Collider2D> ().bounds.size.x; // width of Player box collider
+		float rectHeight = this.GetComponentInChildren<Collider2D> ().bounds.size.y; // height of Player box collider
+
+		if (other.gameObject.tag == "Jumper")
+		{
+			Vector3 contactPoint = other.contacts [0].point;
+			Vector3 center =  collider.bounds.center;
+
+			if (contactPoint.y > center.y && (contactPoint.x < center.x + rectWidth / 2 && contactPoint.x > center.x - rectWidth / 2 )) {
+				_myRigidBody.AddForce (transform.up * 30000);
+				_jumping = false;
+				_grounded = true;
+			} 
+		}
+
+
     }
 
     private void OnCollisionExit2D(Collision2D other)
