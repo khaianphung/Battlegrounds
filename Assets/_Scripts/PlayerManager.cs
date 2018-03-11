@@ -32,7 +32,6 @@ public class PlayerManager : MonoBehaviour
 
 	public float speedX, jumpSpeedY;
 
-	public GameObject bullet;
 	public Transform firePoint;
 
 	// Initializing variables
@@ -282,12 +281,25 @@ public class PlayerManager : MonoBehaviour
         timer -= Time.deltaTime;
         if (timer <= 0f)
         {
-            Vector3 pos = transform.position;
-            var bullet = Instantiate(projectile, pos, Quaternion.identity);
-            bullet.GetComponent<ProjectileControl>().isFacingRight = _facingRight;
-            Physics2D.IgnoreCollision(bullet.GetComponent<Collider2D>(), transform.Find("Body").GetComponent<Collider2D>());
+            Fire();
             timer = 0.2f;
         }
         _myAnim.SetInteger("AttackState", 7);
+    }
+
+    void Fire()
+    {
+        GameObject obj = GenericObjectPool.current.GetPooledObject();
+        if (obj == null)
+        {
+            return;
+        }
+        Physics2D.IgnoreCollision(obj.GetComponent<Collider2D>(), transform.Find("Body").GetComponent<Collider2D>());
+        obj.GetComponent<ProjectileControl>().isFacingRight = _facingRight;
+        obj.transform.position = transform.position;
+        obj.transform.rotation = transform.rotation;
+        obj.SetActive(true);
+
+
     }
 }
