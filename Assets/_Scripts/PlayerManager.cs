@@ -19,7 +19,7 @@ public class PlayerManager : MonoBehaviour
 	private float _speed, _maxhealth, _currenthealth, _healthbarlength;
 	private bool _jumping, _grounded, _dead;
     private int _decay;
-
+	public bool onLadder;
     public bool _facingRight;
 
     //AttackVariable
@@ -28,7 +28,7 @@ public class PlayerManager : MonoBehaviour
     public Transform projectile;
     public bool enableInput;
 
-
+	BoxCollider2D _myCollider;
 
 	public float speedX, jumpSpeedY;
 
@@ -40,6 +40,7 @@ public class PlayerManager : MonoBehaviour
 	{
 		_myAnim = GetComponent<Animator> ();
 		_myRigidBody = GetComponent<Rigidbody2D> ();
+		_myCollider = GetComponent<BoxCollider2D> ();
         _facingRight = false;
         _grounded = true;
 		_jumping = _dead = false;
@@ -49,6 +50,8 @@ public class PlayerManager : MonoBehaviour
         _healthbarlength = Screen.width / 3;
         _myRigidBody.freezeRotation = true;
         enableInput = true;
+		onLadder = false;
+
     }
     //Should maybe moved to GUI once that module is done
     //Load GUI for healthbar
@@ -87,7 +90,7 @@ public class PlayerManager : MonoBehaviour
 		
         if (enableInput)
         {
-            if (Input.GetKey(KeyCode.UpArrow) && _grounded)
+			if (Input.GetKey(KeyCode.UpArrow) && _grounded && !onLadder)
             {
                 Jump();
             }
@@ -107,7 +110,7 @@ public class PlayerManager : MonoBehaviour
                 }
                 _speed = speedX;
             }
-            else if (Input.GetKey(KeyCode.DownArrow) && _grounded)
+			else if (Input.GetKey(KeyCode.DownArrow) && _grounded && !onLadder)
             {
                 _myAnim.SetInteger("State", 4);
             }
@@ -265,6 +268,10 @@ public class PlayerManager : MonoBehaviour
         {
             _myRigidBody.mass = 1;
         }
+		if(other.gameObject.tag == "GoingDownLadder")
+		{
+			//_myCollider.isTrigger = false;
+		}
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -272,6 +279,12 @@ public class PlayerManager : MonoBehaviour
         {
             _currenthealth = _currenthealth - 10;
         }
+
+		if(collision.gameObject.tag == "GoingDownLadder")
+		{
+			Debug.Log("Touching GoingDownLadder");
+			_myCollider.isTrigger = true;
+		}
     }
     void MeleeAttack()
     {

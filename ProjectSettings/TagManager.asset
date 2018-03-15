@@ -8,6 +8,7 @@ TagManager:
   - Spike
   - Body
   - Jumper
+  - GoingLadderDown
   layers:
   - Default
   - TransparentFX
