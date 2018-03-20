@@ -20,9 +20,8 @@ public class PlayerManager : MonoBehaviour
         , _currenthealth, _healthbarlength;
 	private bool _jumping, _grounded, _dead;
     private int _decay;
-
+	public bool onLadder;
     public bool _facingRight;
-
 
     //AttackVariable
     private int previousState;
@@ -30,11 +29,10 @@ public class PlayerManager : MonoBehaviour
     public Transform projectile;
     public bool enableInput;
 
+	BoxCollider2D _myCollider;
 
+	public float speedX, jumpSpeedY;
 
-    public float speedX, jumpSpeedY;
-
-	public GameObject bullet;
 	public Transform firePoint;
     
 	// Initializing variables
@@ -42,6 +40,7 @@ public class PlayerManager : MonoBehaviour
 	{
 		_myAnim = GetComponent<Animator> ();
 		_myRigidBody = GetComponent<Rigidbody2D> ();
+		_myCollider = GetComponent<BoxCollider2D> ();
         _facingRight = false;
         _grounded = true;
 		_jumping = _dead = false;
@@ -51,8 +50,7 @@ public class PlayerManager : MonoBehaviour
         _healthbarlength = Screen.width / 3;
         _myRigidBody.freezeRotation = true;
         enableInput = true;
-
-
+		onLadder = false;
 
     }
     //Should maybe moved to GUI once that module is done
@@ -63,11 +61,6 @@ public class PlayerManager : MonoBehaviour
     }
 	void Update () 
 	{
-        // Keyboard controls
-        // Left player movement
-
-     
-        
         //GetHP from other script
         _maxhealth = GetComponent<PlayerHitManager>().maxHP;
         _currenthealth = GetComponent<PlayerHitManager>().currentHP;
@@ -93,21 +86,22 @@ public class PlayerManager : MonoBehaviour
             FindObjectOfType<AudioManager>().Play("PlayerDeath");
             Destroy(gameObject);
             Application.LoadLevel(Application.loadedLevel);
+<<<<<<< HEAD
 
 
         }
 
        
+=======
+        }
+>>>>>>> 1e03c18906931efaefdde73cf873ae41159016c0
 	}
 	void FixedUpdate()
 	{
-		// Joystick controls
-		Vector2 moveVec = new Vector2 (CrossPlatformInputManager.GetAxis ("Horizontal"), CrossPlatformInputManager.GetAxis ("Vertical")) * speedX;
-		//Debug.Log (moveVec);
-
+		
         if (enableInput)
         {
-            if (Input.GetKey(KeyCode.UpArrow) && _grounded)
+			if (Input.GetKey(KeyCode.UpArrow) && _grounded && !onLadder)
             {
                 Jump();
             }
@@ -129,7 +123,7 @@ public class PlayerManager : MonoBehaviour
                 }
                 _speed = speedX;
             }
-            else if (Input.GetKey(KeyCode.DownArrow) && _grounded)
+			else if (Input.GetKey(KeyCode.DownArrow) && _grounded && !onLadder)
             {
                 _myAnim.SetInteger("State", 4);
             }
@@ -171,13 +165,23 @@ public class PlayerManager : MonoBehaviour
                     _myAnim.SetInteger("AttackState", 8);
                 }
             }
-            // Joystick controls
+
+			// Joystick controls
+			Vector2 moveVec = new Vector2 (CrossPlatformInputManager.GetAxis ("Horizontal"), CrossPlatformInputManager.GetAxis ("Vertical")) * speedX;
             if (moveVec.x > 0)
             {
+				if (!_facingRight)
+				{
+					Flip();
+				}
                 _speed = speedX;
             }
             if (moveVec.x < 0)
             {
+				if (_facingRight)
+				{
+					Flip();
+				}
                 _speed = -speedX;
             }
             if (moveVec.x == 0)
@@ -186,16 +190,9 @@ public class PlayerManager : MonoBehaviour
             }
             if (moveVec.y > 10)
             {
-                //Jump ();
-            }
-            if (moveVec.y > 67)
-            {
-                //Jump ();
+                Jump ();
             }
         }
-
-
-        
 			
 	}
 
@@ -236,12 +233,10 @@ public class PlayerManager : MonoBehaviour
 	// Code to flip the player when facing left and right
 	void Flip()
 	{
-
-			_facingRight = !_facingRight;
-
-			Vector3 temp = transform.localScale;
-			temp.x *= -1;
-			transform.localScale = temp;
+		_facingRight = !_facingRight;
+		Vector3 temp = transform.localScale;
+		temp.x *= -1;
+		transform.localScale = temp;
 	}
 	// Jumping method
 	void Jump()
@@ -269,6 +264,24 @@ public class PlayerManager : MonoBehaviour
         {
             _myRigidBody.velocity = Vector2.zero;
         }
+
+		Collider2D collider = other.collider; // collider of object that is gonna collide with the Player
+		float rectWidth = this.GetComponentInChildren<Collider2D> ().bounds.size.x; // width of Player box collider
+		float rectHeight = this.GetComponentInChildren<Collider2D> ().bounds.size.y; // height of Player box collider
+
+		if (other.gameObject.tag == "Jumper")
+		{
+			Vector3 contactPoint = other.contacts [0].point;
+			Vector3 center =  collider.bounds.center;
+
+			if (contactPoint.y > center.y && (contactPoint.x < center.x + rectWidth / 2 && contactPoint.x > center.x - rectWidth / 2 )) {
+				_myRigidBody.AddForce (transform.up * 30000);
+				_jumping = false;
+				_grounded = true;
+			} 
+		}
+
+
     }
 
     private void OnCollisionExit2D(Collision2D other)
@@ -277,6 +290,10 @@ public class PlayerManager : MonoBehaviour
         {
             _myRigidBody.mass = 1;
         }
+		if(other.gameObject.tag == "GoingDownLadder")
+		{
+			//_myCollider.isTrigger = false;
+		}
     }
     /*
     private void OnTriggerEnter2D(Collider2D collision)
@@ -285,35 +302,61 @@ public class PlayerManager : MonoBehaviour
         {
             _currenthealth = _currenthealth - 10;
         }
+<<<<<<< HEAD
     }
     */
 
+=======
+>>>>>>> 1e03c18906931efaefdde73cf873ae41159016c0
 
+		if(collision.gameObject.tag == "GoingDownLadder")
+		{
+			Debug.Log("Touching GoingDownLadder");
+			_myCollider.isTrigger = true;
+		}
+    }
     void MeleeAttack()
     {
        
      
        
         _myAnim.SetInteger("AttackState", 3);
+<<<<<<< HEAD
        
 
     }
 
    
 
+=======
+    }
+>>>>>>> 1e03c18906931efaefdde73cf873ae41159016c0
     void Shoot()
     {
         
         timer -= Time.deltaTime;
         if (timer <= 0f)
         {
-            Vector3 pos = transform.position;
-            var bullet = Instantiate(projectile, pos, Quaternion.identity);
-            bullet.GetComponent<ProjectileControl>().isFacingRight = _facingRight;
-            Physics2D.IgnoreCollision(bullet.GetComponent<Collider2D>(), transform.Find("Body").GetComponent<Collider2D>());
+            Fire();
             timer = 0.2f;
             FindObjectOfType<AudioManager>().Play("Shoot");
         }
         _myAnim.SetInteger("AttackState", 7);
+    }
+
+    void Fire()
+    {
+        GameObject obj = GenericObjectPool.current.GetPooledObject();
+        if (obj == null)
+        {
+            return;
+        }
+        Physics2D.IgnoreCollision(obj.GetComponent<Collider2D>(), transform.Find("Body").GetComponent<Collider2D>());
+        obj.GetComponent<ProjectileControl>().isFacingRight = _facingRight;
+        obj.transform.position = transform.position;
+        obj.transform.rotation = transform.rotation;
+        obj.SetActive(true);
+
+
     }
 }

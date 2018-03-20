@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Ground
   - Spike
+  - Body
+  - Jumper
+  - GoingLadderDown
   layers:
   - Default
   - TransparentFX

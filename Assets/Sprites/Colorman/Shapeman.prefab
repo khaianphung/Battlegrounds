@@ -359,7 +359,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1229969769
-  m_SortingLayer: 1
+  m_SortingLayer: 0
   m_SortingOrder: 35
 --- !u!23 &23084384387493508
 MeshRenderer:
@@ -393,7 +393,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1229969769
-  m_SortingLayer: 1
+  m_SortingLayer: 0
   m_SortingOrder: 20
 --- !u!23 &23273320193913516
 MeshRenderer:
@@ -427,7 +427,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1229969769
-  m_SortingLayer: 1
+  m_SortingLayer: 0
   m_SortingOrder: 30
 --- !u!23 &23334068480590958
 MeshRenderer:
@@ -461,7 +461,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1229969769
-  m_SortingLayer: 1
+  m_SortingLayer: 0
   m_SortingOrder: 5
 --- !u!23 &23432219540897726
 MeshRenderer:
@@ -495,7 +495,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1229969769
-  m_SortingLayer: 1
+  m_SortingLayer: 0
   m_SortingOrder: 30
 --- !u!23 &23506663356797490
 MeshRenderer:
@@ -529,7 +529,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1229969769
-  m_SortingLayer: 1
+  m_SortingLayer: 0
   m_SortingOrder: 35
 --- !u!23 &23551276876317816
 MeshRenderer:
@@ -563,7 +563,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1229969769
-  m_SortingLayer: 1
+  m_SortingLayer: 0
   m_SortingOrder: 10
 --- !u!23 &23614766896951302
 MeshRenderer:
@@ -597,7 +597,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1229969769
-  m_SortingLayer: 1
+  m_SortingLayer: 0
   m_SortingOrder: 5
 --- !u!23 &23816032358880140
 MeshRenderer:
@@ -631,7 +631,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1229969769
-  m_SortingLayer: 1
+  m_SortingLayer: 0
   m_SortingOrder: 20
 --- !u!33 &33046705650141220
 MeshFilter:
