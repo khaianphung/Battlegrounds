@@ -13,12 +13,13 @@ public class Spikes : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D col)
     {
-        Debug.Log("Collision ? "+ col.tag);
+        //Debug.Log(col.transform.parent.tag);
         if (col.CompareTag("Body"))
         {
             
             player.Damage(200);
-            //Debug.Log("Something");
+            StartCoroutine(player.KnockBack(0.02f, 350, player.transform.position));
+            
         }
     }
     

@@ -59,7 +59,7 @@ public class ProjectileControl : MonoBehaviour {
     }
     void OnCollisionExit2D(Collision2D col)
     {
-        gameObject.SetActive(false);
+        Destroy(gameObject);
     }
 
 

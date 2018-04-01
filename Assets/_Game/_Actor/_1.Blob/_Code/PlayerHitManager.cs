@@ -76,8 +76,22 @@ public class PlayerHitManager : MonoBehaviour {
     {
         currentHP  = currentHP - dmg;
         Debug.Log("Damage Works");
-         
-      
+    }
+    
+    public IEnumerator KnockBack(float knockDur, float knockBackPwr, Vector3 knockBackDir) // dont erase im trying to separate
+    {
+
+        float timer = 0;
+        while (knockDur > timer)
+        {
+            timer += Time.deltaTime;
+            rigidbody.velocity = new Vector2(0, 0);   
+            rigidbody.AddForce(new Vector3(knockBackDir.x * -100, knockBackDir.y * knockBackPwr, transform.position.z));
+
+
+        }
+        yield return 0;
+
     }
     void OnCollisionEnter2D(Collision2D col)
     {
